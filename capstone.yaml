@@ -1,0 +1,48 @@
+project_name: Usage Metering & Billing Engine
+author: Ayesha Ijaz
+github_repo: https://github.com/ayeshaijaz02/flyrank-capstone-metering-billing
+tech_stack:
+  - FastAPI
+  - PostgreSQL
+  - Docker
+  - Stripe
+  - SQLAlchemy
+
+phases:
+  - name: Design
+    status: complete
+    deliverables:
+      - DESIGN.md
+      - .gitignore
+      - .env.example
+
+  - name: Core Billing Logic
+    status: complete
+    deliverables:
+      - Docker + PostgreSQL setup
+      - Database schema (4 tables, seeded)
+      - /tenants endpoint
+      - /generate endpoint (idempotent)
+      - /usage endpoint
+      - Quota enforcement
+
+  - name: Stripe Integration
+    status: complete
+    deliverables:
+      - /checkout endpoint
+      - /webhooks/stripe endpoint
+      - Verified end-to-end payment and upgrade flow
+
+  - name: Cost Calculation
+    status: complete
+    deliverables:
+      - Pricing constants
+      - Cost breakdown in /usage endpoint
+
+  - name: Documentation
+    status: complete
+    deliverables:
+      - README.md
+      - EVIDENCE.md
+      - BUILDLOG.md
+      - capstone.yaml
