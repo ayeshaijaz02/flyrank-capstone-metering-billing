@@ -1,6 +1,8 @@
 import os
 import uuid
 import stripe
+PRICE_PER_API_CALL = 0.001
+PRICE_PER_AI_TOKEN = 0.00002
 from fastapi import FastAPI, Depends, HTTPException, Request, Header
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
@@ -142,10 +144,19 @@ def get_usage(tenant_id: str, db: Session = Depends(get_db)):
     api_calls_used = sum(e.quantity for e in events if e.type == "api_call")
     ai_tokens_used = sum(e.quantity for e in events if e.type == "ai_tokens")
 
+    api_calls_cost = round(api_calls_used * PRICE_PER_API_CALL, 4)
+    ai_tokens_cost = round(ai_tokens_used * PRICE_PER_AI_TOKEN, 4)
+    total_cost = round(api_calls_cost + ai_tokens_cost, 4)
+
     return {
         "plan": plan.name,
         "api_calls": {"used": api_calls_used, "limit": plan.api_call_limit},
         "ai_tokens": {"used": ai_tokens_used, "limit": plan.ai_token_limit},
+        "cost": {
+            "api_calls_cost": api_calls_cost,
+            "ai_tokens_cost": ai_tokens_cost,
+            "total_cost": total_cost,
+        },
     }
 @app.post("/checkout")
 def create_checkout_session(tenant_id: str, db: Session = Depends(get_db)):
